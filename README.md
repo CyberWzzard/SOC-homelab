@@ -104,7 +104,9 @@ SOC-homelab
 
 ### Links
 [openwrt-config.md](configs/openwrt-config.md)  - Gateway router NAT and remote management rules
+
 [switch-config.md](configs/switch-config.md)    - Cisco VLANs, SVIs, ACLs, SPAN, and full command history
+
 [INC-001-Internal-Network-Sweep.md](incidents/INC-001-Internal-Network-Sweep/INC-001-Internal-Network-Sweep.md) - Full incident Report
 
 ## Incident Response Simulations
