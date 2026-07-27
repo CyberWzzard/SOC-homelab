@@ -193,15 +193,10 @@ Te1/1/4                unassigned      YES unset  administratively down down
 | SW1    | (config)#          | int vlan 10                                                                     | DHCP relay agent for Endhosts\_Users vlan                     |
 | SW1    | (config-if)#       | ip helper-address 192.168.4.3                                                   |                                                              |
 | SW1    | (config)#          | ip route 0.0.0.0 0.0.0.0 10.0.0.10                                              | Default gateway (for temporary internet access)              |
-| SW1    | (config)#          | ip access-list extended 100                                                     | ACL: Prevent Attacker and Endhosts\_Users from talking to SOC |
+| SW1    | (config)#          | ip access-list extended 100                                                     | ACL: Prevent Attacker from talking to SOC |
 | SW1    | (config-ext-nacl)# | 10 deny ip any 192.168.3.0 0.0.0.255                                            |                                                              |
 | SW1    | (config-ext-nacl)# | 20 permit ip any any                                                            |                                                              |
 | SW1    | (config-ext-nacl)# | int vlan 20                                                                     |                                                              |
-| SW1    | (config-if)#       | ip access-group 100 in                                                          | prevent Attacker from talking to SOC                         |
-| SW1    | (config-if)#       | int vlan 10                                                                     |                                                              |
-| SW1    | (config-if)#       | ip access-group 100 in                                                          | prevent Endhosts\_Users from talking to SOC                   |
-| SW1    | (config-if)#       | ip access-group 100 in                                                          | prevent Attacker from talking to SOC                         |
-| SW1    | (config-if)#       | int vlan 10                                                                     |                                                              |
-| SW1    | (config-if)#       | ip access-group 100 in                                                          | prevent Endhosts\_Users from talking to SOC                   |
+| SW1    | (config-if)#       | ip access-group 100 in                                                          |                                                              |
 
 </details>
