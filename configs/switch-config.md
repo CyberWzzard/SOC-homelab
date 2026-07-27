@@ -132,18 +132,13 @@ Te1/1/4                unassigned      YES unset  administratively down down
 | Switch | (config)#          | hostname SW1                                                                    | hostname setup                                               |
 | SW1    | (config)#          | line con 0                                                                      |                                                              |
 | SW1    | (config-line)#     | logging synchronous                                                             | logging type                                                 |
-|        |                    |                                                                                 |                                                              |
 | SW1    | (config)#          | no ip http server                                                               | disable config through web                                   |
 | SW1    | (config)#          | no ip http secure-server                                                        |                                                              |
-|        |                    |                                                                                 |                                                              |
 | SW1    | (config)#          | no cdp run                                                                      | disable cdp                                                  |
-|        |                    |                                                                                 |                                                              |
 | SW1    | (config)#          | clock timezone timezoneName offset#                                             | set time settings (specifics redacted for privacy)           |
 | SW1    | (config)#          | clock summer-time timezoneName 1 Saturday March 00:00 1 Saturday November 00:00 |                                                              |
 | SW1    | (config)#          | service timestamps log datetime localtime show-timezone year                    |                                                              |
-|        |                    |                                                                                 |                                                              |
 | SW     | (config)#          | ip routing                                                                      | enable routing on switch                                     |
-|        |                    |                                                                                 |                                                              |
 | SW1    | (config)#          | vlan 10                                                                         | VLANS                                                        |
 | SW1    | (config-vlan)#     | name Endhosts\_Users                                                             |                                                              |
 | SW1    | (config-vlan)#     | vlan 20                                                                         |                                                              |
@@ -156,7 +151,6 @@ Te1/1/4                unassigned      YES unset  administratively down down
 | SW1    | (config-vlan)#     | name Management                                                                 |                                                              |
 | SW1    | (config-vlan)#     | vlan 999                                                                        |                                                              |
 | SW1    | (config-vlan)#     | name Unused\_Ports                                                               |                                                              |
-|        |                    |                                                                                 |                                                              |
 | SW1    | (config)#          | int range g1/0/7-12                                                             | Apply VLANS to interfaces                                    |
 | SW1    | (config-if-range)# | switchport mode access                                                          |                                                              |
 | SW1    | (config-if-range)# | switchport access vlan 10                                                       |                                                              |
@@ -176,14 +170,11 @@ Te1/1/4                unassigned      YES unset  administratively down down
 | SW1    | (config-if-range)# | switchport mode access                                                          |                                                              |
 | SW1    | (config-if-range)# | switchport access vlan 999                                                      |                                                              |
 | SW1    | (config-if-range)# | shutdown                                                                        | Disabled unused ports                                        |
-|        |                    |                                                                                 |                                                              |
 | SW1    | (config)#          | int range g1/0/1-30                                                             | enable portfast and bpduguard                                |
 | SW1    | (config-if-range)# | spanning-tree portfast                                                          |                                                              |
 | SW1    | (config-if-range)# | spanning-tree bpduguard enable                                                  |                                                              |
-|        |                    |                                                                                 |                                                              |
 | SW1    | (config)#          | monitor session 1 source vlan 10 , 20 , 40 both                                 | SPAN for SOC Server                                          |
 | SW1    | (config)#          | monitor session 1 destiniation int g1/0/19                                      |                                                              |
-|        |                    |                                                                                 |                                                              |
 | SW1    | (config)#          | int vlan 10                                                                     | SVIs                                                         |
 | SW1    | (config-if)#       | ip address 192.168.1.1 255.255.255.0                                            |                                                              |
 | SW1    | (config-if)#       | no shut                                                                         |                                                              |
@@ -199,21 +190,18 @@ Te1/1/4                unassigned      YES unset  administratively down down
 | SW1    | (config-if)#       | int vlan 99                                                                     |                                                              |
 | SW1    | (config-if)#       | ip address 10.0.0.1 255.255.255.0                                               |                                                              |
 | SW1    | (config-if)#       | no shut                                                                         |                                                              |
-|        |                    |                                                                                 |                                                              |
-| SW1    | (config)#          | int vlan 10                                                                     | DHCP relay agent for Endhosts_Users vlan                     |
+| SW1    | (config)#          | int vlan 10                                                                     | DHCP relay agent for Endhosts\_Users vlan                     |
 | SW1    | (config-if)#       | ip helper-address 192.168.4.3                                                   |                                                              |
-|        |                    |                                                                                 |                                                              |
 | SW1    | (config)#          | ip route 0.0.0.0 0.0.0.0 10.0.0.10                                              | Default gateway (for temporary internet access)              |
-|        |                    |                                                                                 |                                                              |
-| SW1    | (config)#          | ip access-list extended 100                                                     | ACL: Prevent Attacker and Endhosts_Users from talking to SOC |
+| SW1    | (config)#          | ip access-list extended 100                                                     | ACL: Prevent Attacker and Endhosts\_Users from talking to SOC |
 | SW1    | (config-ext-nacl)# | 10 deny ip any 192.168.3.0 0.0.0.255                                            |                                                              |
 | SW1    | (config-ext-nacl)# | 20 permit ip any any                                                            |                                                              |
 | SW1    | (config-ext-nacl)# | int vlan 20                                                                     |                                                              |
 | SW1    | (config-if)#       | ip access-group 100 in                                                          | prevent Attacker from talking to SOC                         |
 | SW1    | (config-if)#       | int vlan 10                                                                     |                                                              |
-| SW1    | (config-if)#       | ip access-group 100 in                                                          | prevent Endhosts_Users from talking to SOC                   |
+| SW1    | (config-if)#       | ip access-group 100 in                                                          | prevent Endhosts\_Users from talking to SOC                   |
 | SW1    | (config-if)#       | ip access-group 100 in                                                          | prevent Attacker from talking to SOC                         |
 | SW1    | (config-if)#       | int vlan 10                                                                     |                                                              |
-| SW1    | (config-if)#       | ip access-group 100 in                                                          | prevent Endhosts_Users from talking to SOC                   |
+| SW1    | (config-if)#       | ip access-group 100 in                                                          | prevent Endhosts\_Users from talking to SOC                   |
 
 </details>

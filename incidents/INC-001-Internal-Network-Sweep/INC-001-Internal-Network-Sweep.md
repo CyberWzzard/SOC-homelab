@@ -2,10 +2,10 @@
 
 ## Table of Contents
 - [Section 1 - Executive Summary](#section-1-executive-summary)
-- [Section 2 - Executive Summary](#section-2-confirmed-findings)
-- [Section 3 - Executive Summary](#section-3-report)
-- [Section 4 - Executive Summary](#section-4-legend)
-- [Section 5 - Executive Summary](#section-5-ids-remediation-tuning)
+- [Section 2 - Confirmed Findings](#section-2-confirmed-findings)
+- [Section 3 - Report](#section-3-report)
+- [Section 4 - Legend](#section-4-legend)
+- [Section 5 - IDS Remediation & Tuning](#section-5-ids-remediation-tuning)
 
 ## Section 1 - Executive Summary
 
@@ -120,10 +120,10 @@
 ![Elk Stack Alerts Graph](elk-screenshots/elk-stack-alerts-graph.png)
 
 ### Graph 2.3 - Volume of Network Connections per 500-Millisecond Interval Phase 1
-![Elk Stack Connections Phase1 Graph](elk-screenshots/elk-connections-phase1-graph.png)
+![Elk Stack Connections Phase1 Graph](elk-screenshots/elk-stack-connections-phase1-graph.png)
 
 ### Dashboard 2.1 - Zeek Capture Search
-[!Zeek Capture Search](elk-screenshots/zeek-capture-search.png)
+![Zeek Capture Search](elk-screenshots/zeek-capture-search.png)
 
 ### Dashboard 2.2 - Suricata Alert Search
 ![Suricata Alert Search](elk-screenshots/suricata-alert-search.png)
@@ -138,18 +138,25 @@
 
 ### Attack Methodology & Technique
 The incident involved a reconnaissance scan utilizing both TCP Connect (-sT) and SYN Stealth (-sS) techniques. The attacker segmented the attack into four distinct phases:	
+
 **Phase 1 & 3 (Connect Scan):** Used against 192.168.1.0/24 and 192.168.4.0/24 subnets to identify open ports via full handshakes (ShAR)
+
 **Phase 2 & 4 (Stealth Scan):** Switched to stealth techniques (Shr) roughly 6 minutes later, likely to evade basic logging or test detection capabilities on previously identified targets.
+
 **Precision:** The scan targeted the 1,000 most common ports.
 
 ### Attacker Intent & Targeting
 **Identified Services:** The attacker successfully identified open ports for Microsoft RPC (135), SMB (445), LDAP (389), and Global Catalog (3268) on 192.168.4.3 and SSH (22) from multiple devices on the 192.168.1.0/24 subnet
+
 **Database Hunting:** Suricata alerts confirmed probes against MSSQL (1433), MySQL (3306), and SSH (22) across the network.
+
 **Lateral Movement Prep:** Successful enumeration of SSH (22) and Telnet (23) on multiple hosts provides the attacker with potential entry points for brute-force attacks.
 
 ### Detection Gap Analysis
 **The Blind Spot:** While Zeek logged 24,000+ connection attempts across 1,000 ports, Suricata generated only 92 alerts for 8 specific ports. This means that the incident had a 0.8% port coverage.
+
 **Reason:** The default Emerging Threats (ET) only alerts on specific high value ports (SQL, SSH). Scans against common web ports (80, 443) and other services went undetected by the IDS.
+
 **Impact:** Without correlating Zeek conn.log data, the SOC would have underestimated the scan scope by 99.2%, believing only database and SSH port were targeted. If a port scan were to occur that does not contain the 8 specific ports, it would remain undetected.
 
 ### Conclusion
@@ -180,12 +187,17 @@ The attacker successfully mapped open ports and services from the 192.168.1.0/24
 **Objective:** Enhance port scan detection by shifting from signature-based detection (limited to specific ports) to behavioral-based detection. The goal is to identify high-volume scanning across any port range while maintaining near-zero false positive rate.
 
 **Rule Creation:** Deployed and enabled a new behavioral-based Suricata rule to detect high rate of SYN packets (100 over 20 seconds) from any incoming IP address.
+
 **Validation Test:** Tested new rule while re-simulating the attack again under similar conditions. 
+
 **Challenges Faced:** The primary challenge was balancing detection sensitivity with alert volume. Early revised rules generated thousands of alerts, and false positives.
 
 **Revision 1:** The first revision consisted of multiple behavioral rules that attempted to match specific TCP flag sequences (SYN, SYN-ACK, RST/RST-ACK). This failed because legitimate Windows services mimic these sequences, causing high false positives. Furthermore, the rule alerted on every individual packet (open or closed port), generating thousands of alerts for a single subnet scan.
+
 **Revision 2:** To circumvent false positives, the next revision used just 1 rule instead of multiple, and adopted a simpler approach to filter based on packet rate and SYN flags, rather than attempting to correlate complete TCP flag sequences. The rule used “detection\_filter:track by\_src, count 20, seconds 5;”, which still created thousands of alerts. This is because “detection\_filter” triggers an alert for each packet after the threshold is met, not just once. Although it creates a high detection rate, it is operationally inefficient.
+
 **Revision 3:** To reduce alert volume, “threshold: type both, track by\_src, count 20, seconds 5;” was used instead of “detection\_filter”. It successfully reduced alert volume from thousands, to just 1 or 2 per scan. However, the current threshold (20 packets/5 seconds) still triggered false positives from busy web traffic.
+
 **Revision 4(Final):** Tuned the threshold to 100 packets over a time period of 20 seconds, which resulted in zero false positives during testing and coverage for both horizontal (subnet) and vertical (multi-port) scans.
 
 ### Screenshot 5.1 - Custom Rule

@@ -12,7 +12,6 @@
 - [Security & Isolation Model](#security--isolation-model)
 - [Repository Structure](#repository-structure)
 - [Incident Response Simulations](#incident-response-simulations)
-- [Lessons Learned](#lessons-learned)
 - [Disclaimer](#disclaimer)
 
 
@@ -87,10 +86,11 @@ To prevent external intrusion, the OpenWrt gateway enforces **Outbound NAT with 
 - **Inbound:** The stateful firewall **drops** all unsolicited inbound traffic, so no external device can initiate a connection into the lab.
 
 ## Repository Structure
+```text
 SOC-homelab
 ├── configs/
-│   ├── [openwrt-config.md](configs/openwrt-config.md)  # Gateway router NAT and remote management rules
-│   └── [switch-config.md](configs/switch-config.md)    # Cisco VLANs, SVIs, ACLs, SPAN, and full command history
+│   ├── openwrt-config.md
+│   └── switch-config.md
 ├── diagrams
 │   └── network-topology.png
 ├── incidents
@@ -98,8 +98,14 @@ SOC-homelab
 │       ├── created-rules/
 │       ├── elk-screenshots/
 │       ├── wireshark-screenshots/
-│       └── [INC-001-Internal-Network-Sweep.md](incidents/INC-001-Internal-Network-Sweep/INC-001-Internal-Network-Sweep.md) # Full incident Report
+│       └── INC-001-Internal-Network-Sweep.md
 └── README.md
+```
+
+### Links
+[openwrt-config.md](configs/openwrt-config.md)  - Gateway router NAT and remote management rules
+[switch-config.md](configs/switch-config.md)    - Cisco VLANs, SVIs, ACLs, SPAN, and full command history
+[INC-001-Internal-Network-Sweep.md](incidents/INC-001-Internal-Network-Sweep/INC-001-Internal-Network-Sweep.md) - Full incident Report
 
 ## Incident Response Simulations
 | **Incident ID** | **Title** | **Status** | **MITRE ATT&CK Technique** | **Activity Start (Zeek)** | **Alerts Start (Suricata)** | **Alerts End** | **Activity End** | **Alert Count** | **Connection Count** | **Src IP** | **Target Scope** | **Conclusion** |
