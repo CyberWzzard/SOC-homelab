@@ -1,11 +1,11 @@
 # Incident Triage Report: INC-001-Internal-Network-Sweep
 
 ## Table of Contents
-- [Section 1 - Executive Summary](#section-1-executive-summary)
-- [Section 2 - Confirmed Findings](#section-2-confirmed-findings)
-- [Section 3 - Report](#section-3-report)
-- [Section 4 - Legend](#section-4-legend)
-- [Section 5 - IDS Remediation & Tuning](#section-5-ids-remediation-tuning)
+- [Section 1 - Executive Summary](#section-1---executive-summary)
+- [Section 2 - Confirmed Findings](#section-2---confirmed-findings)
+- [Section 3 - Report](#section-3---report)
+- [Section 4 - Legend](#section-4---legend)
+- [Section 5 - IDS Remediation & Tuning](#section-5---ids-remediation--tuning)
 
 ## Section 1 - Executive Summary
 
