@@ -52,15 +52,15 @@ Contains an overview of the various tools and their purpose in this lab.
 | **NIDS** | Suricata | Intrusion detection and traffic analysis |
 | **File Analysis** | Strelka | Scans files extracted from traffic to detect malicious activity |
 | **Packet Capture** | Stenographer | Captures and indexes PCAP traffic for forensic retrieval |
-| **PCAP Analysis** | Wireshark | Local forensic analysis of raw packets retrieved from Steonographer |
-| **Franework** | MITRE ATT&CK | Maps adversary tactics and techniques to classify threats |
+| **PCAP Analysis** | Wireshark | Local forensic analysis of raw packets retrieved from Stenographer |
+| **Framework** | MITRE ATT&CK | Maps adversary tactics and techniques to classify threats |
 
 ## Network Diagram
 
 ![Lab Network Topology](diagrams/network-topology.png)
 
 ### Architectural Details
-- **Enterprise DHCP Relay:** Assets in VLAN 10, which include domain-joined and standalone endhostsi, acquire their IP addresses from the **Windows Server 2022 Domain Controller** via Cisco's `ip helper-address` configuration.
+- **Enterprise DHCP Relay:** Assets in VLAN 10, which include domain-joined and standalone endhosts, acquire their IP addresses from the **Windows Server 2022 Domain Controller** via Cisco's `ip helper-address` configuration.
 - **SPAN/Port Mirroring:** The Cisco switch utilizaes a dedicated **SPAN (Switch Port Analyzer)** session to mirror all traffic from VLANs 10,20, and 40 into **Security Onion's** sniffing interface on VLAN 30. This ensures full packet capture without creating any network bottlenecks.
 
 ## Security & Isolation Model
