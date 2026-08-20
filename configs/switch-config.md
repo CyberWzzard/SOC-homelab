@@ -46,7 +46,7 @@ Session 1
 ---------
 Type                     : Local Session
 Source VLANs             :
-    Both                 : 10,20,40
+    RX Only              : 10,20,40
 Destination Ports        : Gi1/0/19
     Encapsulation        : Native
           Ingress        : Disabled
@@ -173,7 +173,7 @@ Te1/1/4                unassigned      YES unset  administratively down down
 | SW1    | (config)#          | int range g1/0/1-30                                                             | enable portfast and bpduguard                                |
 | SW1    | (config-if-range)# | spanning-tree portfast                                                          |                                                              |
 | SW1    | (config-if-range)# | spanning-tree bpduguard enable                                                  |                                                              |
-| SW1    | (config)#          | monitor session 1 source vlan 10 , 20 , 40 both                                 | SPAN for SOC Server                                          |
+| SW1    | (config)#          | monitor session 1 source vlan 10 , 20 , 40 rx                                   | SPAN for SOC Server                                          |
 | SW1    | (config)#          | monitor session 1 destiniation int g1/0/19                                      |                                                              |
 | SW1    | (config)#          | int vlan 10                                                                     | SVIs                                                         |
 | SW1    | (config-if)#       | ip address 192.168.1.1 255.255.255.0                                            |                                                              |

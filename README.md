@@ -27,12 +27,13 @@ This Project replicates an enterprise-grade security monitoring environment usin
 ## Infrastructure
 | **Component** | **Device/OS** | **Role** |
 | :--- | :--- | :--- |
-| **Core Routing** | L3 Cisco Catalyst 3850 Switch | **Networking & Security:** VLAN segmentation, SVI routing, ACLs **SPAN port:** mirrors all endhost VLAN traffic to SOC Server. |
+| **Core Routing** | L3 Cisco Catalyst 3850 Switch | **Networking & Security:** VLAN segmentation, SVI routing, ACLs **SPAN port:** mirrors all incoming traffic from the endhosts and attacker VLANS to the SOC Server. |
 | **Gateway Router** | OpenWRT Router | **Nat Gateway:** Provides internet access for installing and updating resources inside the LAN |
 | **SOC Server** | Ubuntu Server 26.04 LTS | **Hypervisor:** Hosts Security Onion 2.4 (Standalone) in KVM for log aggregation and threat hunting. |
 | **SOC Workstation** | Linux Mint | **Analysis Station:** Connects to Security Onion's web UI. **Management:** Serial console for Switch, SSH/Web UI for OpenWRT |
 | **Victim Linux/Web Server** | Ubuntu Server 26.04 LTS | **Hypervisor:** Hosts Windows Server in KVM. **Docker Container:** OWASP Juice Shop |
-| **Victim Domain Controller** | Windows Server 2022 | **Core Services:** AD DS, SMB, DHCP, DNS, RDP **Logging:** Sysmon |
+| **Victim Domain Controller** | Windows Server 2022 | **Core Services:** AD DS, DHCP, DNS, RDP **Logging:** Sysmon |
+| **Victim File Server** | Windows Server 2022 | **Core Services:** SMB **Logging:** Sysmon |
 | **Victim Linux Endhost 1** | Linux Mint | **Domain Joined:** Joined to Windows Server **VirtualBox:** Runs Windows Endhost. |
 | **Victim Linux Endhost 2** | Linux Mint | **Non-Domain Joined:** Standalone environment for non-domain related attacks. |
 | **Victim Windows Endhost** | Windows 11 | **Domain Joined:** Joined to Windows Server |
@@ -61,7 +62,7 @@ Contains an overview of the various tools and their purpose in this lab.
 
 ### Architectural Details
 - **Enterprise DHCP Relay:** Assets in VLAN 10, which include domain-joined and standalone endhosts, acquire their IP addresses from the **Windows Server 2022 Domain Controller** via Cisco's `ip helper-address` configuration.
-- **SPAN/Port Mirroring:** The Cisco switch utilizaes a dedicated **SPAN (Switch Port Analyzer)** session to mirror all traffic from VLANs 10,20, and 40 into **Security Onion's** sniffing interface on VLAN 30. This ensures full packet capture without creating any network bottlenecks.
+- **SPAN/Port Mirroring:** The Cisco switch utilizaes a dedicated **SPAN (Switch Port Analyzer)** session to mirror all incoming traffic from VLANs 10,20, and 40 into **Security Onion's** sniffing interface on VLAN 30. This ensures full packet capture without creating any network bottlenecks.
 
 ## Security & Isolation Model
 This lab operates under a **strictly controlled connectivity model** to balance functionality with safety.
@@ -109,10 +110,13 @@ SOC-homelab
 
 [INC-001-Internal-Network-Sweep.md](incidents/INC-001-Internal-Network-Sweep/INC-001-Internal-Network-Sweep.md) - Full incident Report
 
+[INC-002-Fileserver-Exfiltration-Campaign.md](incidents/INC-002-Fileserver-Exfiltration-Campaign/INC-002-Fileserver-Exfiltration-Campaign.md) - Full incident Report
+
 ## Incident Response Simulations
 | **Incident ID** | **Title** | **Status** | **MITRE ATT&CK Technique** | **Activity Start (Zeek)** | **Alerts Start (Suricata)** | **Alerts End** | **Activity End** | **Alert Count** | **Connection Count** | **Src IP** | **Target Scope** | **Conclusion** |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|
 | INC-2026-001 | Internal  Network Sweep | Closed<br>Investigation | T1046 (Discovery) | 2026-07-08<br>14:46:48.797 | 2026-07-08<br>14:46:52.967 | 2026-07-08<br>15:02:03.460 | 2026-07-08<br>15:02:04.518 | 92 | 24,358 | `192.168.2.2` | `192.168.1.0/24`<br>`192.168.4.0/24` | Unauthorized Scan |
+| INC-2026-002 | Fileserver<br>Exfiltration Campaign | Open | T1046 (Discovery) - Network Service Discovery<br>T1110.001 (Credential Access) – Brute Force: Password Guessing<br>T1558.003 (Credential Access) – Steal or Force Kerberos Tickets: Kerberoasting<br>T1110.002 (Credential Access) – Brute Force: Password Cracking<br>T1021 (Lateral Movement) - Remote Services<br>T1048.003 (Exfiltration) – Exfiltration Over Alternative Protocol: Exfiltration Over Unencrypted Non-C2 Protocol | 2026-08-12<br>15:17:59.719 | 2026-08-12<br>15:18:01.335 | 2026-08-12<br>15:27:19.493 | 2026-08-12<br>15:28:28.209 | 4,659 | 15,538 | 192.168.2.2 | 192.168.1.12/24<br>192.168.4.3/24<br>192.168.4.4/24 | Unauthorized Scan<br>Kerberoasting<br>Unauthorized Share Access<br>Data Exfiltration |
 
 ## Disclaimer
 **Disclaimer:** This project is for educational purposes only. All attack simulations were performed in an isolated and controlled environment on my own equipment. 
