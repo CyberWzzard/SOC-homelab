@@ -1,4 +1,4 @@
-# Incident Triage Report: INC-001-Internal-Network-Sweep
+# Incident Triage Report: INC-002-Fileserver-Exfiltration-Campaign
 
 ## Table of Contents
 - [Section 1 - Executive Summary](#section-1---executive-summary)
@@ -86,7 +86,7 @@ Full list of Suricata alerts during the incident which signals for possible scan
 | 15:27 | 192.168.2.2 | 192.168.4.4 | ET INFO NTLM Session Setup Request - Auth | 1 |
 | 15:27 | 192.168.2.2 | 192.168.4.4 | ET INFO NTLM Session Setup Request - Negotiate | 1 |
 | 15:27 | 192.168.4.4 | 192.168.2.2 | ET INFO NTLMv1 Session Setup Response - Challenge | 1 |
-| **Total ** | - | - | - | **4659** |
+| **Total** | - | - | - | **4659** |
 
 ### Table 2.2 – Zeek Connection History: Verified Open Ports
 Enumeration of active network services on target hosts (192.168.4.3, 192.168.4.4, 192.168.1.10, 192.168.1.12) mapped by the attacker (192.168.2.2).
@@ -195,7 +195,7 @@ This capture shows the atttacker requesting for the 'Important\_Info.txt' file, 
 ![SMB File Request1](wireshark-screenshots/smb-file-request1.png)
 
 ### Screenshot 2.6 – Wireshark Capture of SMB File Request 3
-This capture shows the third request of the 'Important\_info.txt' file.
+This capture shows the third request of the 'Important\_Info.txt' file.
 
 ![SMB File Request2](wireshark-screenshots/smb-file-request2.png)
 
