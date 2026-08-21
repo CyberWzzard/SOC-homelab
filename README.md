@@ -1,8 +1,8 @@
 # SOC-homelab
 
-**Objective:** Building and maintaining a partially isolated, Security Operations Center (SOC) for gaining hands on experience with threat detection, incident response, and network security.
+**Objective:** Building and maintaining a partially isolated Security Operations Center (SOC) for gaining hands-on experience with threat detection, incident response, and network security.
 
-**Status:** Active Development | **Last Updated:** July 2026
+**Status:** Active Development | **Last Updated:** August 2026
 
 ## Table of Contents
 - [Overview](#overview)
@@ -16,11 +16,11 @@
 
 
 ## Overview
-This Project replicates an enterprise-grade security monitoring environment using an abundance of tools. It ingests logs from endpoints, and network traffic into a central SIEM for correlation and alerting. This lab is used to practice **threat hunting**, **incident response**, and **network security**.
+This project replicates an enterprise-grade security monitoring environment using an abundance of tools. It ingests logs from endpoints and network traffic into a central SIEM for correlation and alerting. This lab is used to practice **threat hunting**, **incident response**, and **network security**.
 
 **Primary Goals:**
 - Centralize log management and threat detection with the use of SIEM.
-- Simulate various real-world attacks in an isolated environment to gain hands on skills on how they work and how to defend against them.
+- Simulate various real-world attacks in an isolated environment to gain hands-on skills on how they work and how to defend against them.
 - Secure a small network from attacks by implementing various network security concepts such as segmentation, firewall rules, and ACLs.
 - Learn to think like a threat hunter and incident responder.
 
@@ -61,8 +61,8 @@ Contains an overview of the various tools and their purpose in this lab.
 ![Lab Network Topology](diagrams/network-topology.png)
 
 ### Architectural Details
-- **Enterprise DHCP Relay:** Assets in VLAN 10, which include domain-joined and standalone endhosts, acquire their IP addresses from the **Windows Server 2022 Domain Controller** via Cisco's `ip helper-address` configuration.
-- **SPAN/Port Mirroring:** The Cisco switch utilizaes a dedicated **SPAN (Switch Port Analyzer)** session to mirror all incoming traffic from VLANs 10,20, and 40 into **Security Onion's** sniffing interface on VLAN 30. This ensures full packet capture without creating any network bottlenecks.
+- **Enterprise DHCP Relay:** Assets in VLAN 10 acquire their IP addresses from the **Windows Server 2022 Domain Controller** via Cisco's `ip helper-address` configuration.
+- **SPAN/Port Mirroring:** The Cisco switch utilizes a dedicated **SPAN (Switch Port Analyzer)** session to mirror all incoming traffic from VLANs 10, 20, and 40 into **Security Onion's** sniffing interface on VLAN 30. This ensures full packet capture without creating any network bottlenecks.
 
 ## Security & Isolation Model
 This lab operates under a **strictly controlled connectivity model** to balance functionality with safety.
@@ -70,7 +70,7 @@ This lab operates under a **strictly controlled connectivity model** to balance 
 ### 1. Conditional Internet Access
 Internet connectivity is **disabled by default** and only enabled temporarily for specific maintenance tasks:
 - **Software Updates & Installation:** Permitted on any lab device (Windows Server, Parrot OS, Security Onion).
-- **Research & Development:** Restricted **exclusively** to the SOC Analyst PC (accessing GitHub, debugging assistance, closing knowledge gaps).
+- **Research & Development:** Restricted **exclusively** to the SOC Analyst PC (accessing GitHub, debugging assistence, closing knowledge gaps).
 
 ### 2. Attack Simulation Containment
 During active attack simulations, the OpenWrt gateway is **physically disconnected** from the upstream internet. This ensures absolute isolation, guaranteeing that nothing can leave the lab environment.
