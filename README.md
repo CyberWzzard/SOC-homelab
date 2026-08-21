@@ -92,14 +92,19 @@ SOC-homelab
 ├── configs/
 │   ├── openwrt-config.md
 │   └── switch-config.md
-├── diagrams
+├── diagrams/
 │   └── network-topology.png
-├── incidents
-│   └── INC-001-Internal-Network-Sweep
+├── incidents/
+│   ├── INC-001-Internal-Network-Sweep/
+│   │   ├── created-rules/
+│   │   ├── elk-screenshots/
+│   │   ├── wireshark-screenshots/
+│   │   └── INC-001-Internal-Network-Sweep.md
+│   └── INC-002-Fileserver-Exfiltration-Campaign/
 │       ├── created-rules/
 │       ├── elk-screenshots/
 │       ├── wireshark-screenshots/
-│       └── INC-001-Internal-Network-Sweep.md
+│       └── INC-002-Fileserver-Exfiltration-Campaign.md
 └── README.md
 ```
 
